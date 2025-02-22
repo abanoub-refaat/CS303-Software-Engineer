@@ -6,62 +6,42 @@ import {
   SafeAreaView,
   TextInput,
   Button,
+  ScrollView,
+  FlatList,
+  Item,
 } from "react-native";
 import { useState } from "react";
+import icon from "./assets/icon.png";
+import icon2 from "./assets/adaptive-icon.png";
 
 export default function App() {
-  const [guess, setGuess] = useState(Math.floor(Math.random() * 99));
-  const [answer, setAnswer] = useState(0);
-  const [status, setStatus] = useState("Start the game by entering a guess!");
-  const [countGuess, setCountGuess] = useState(0);
-  const [highScore, setHighScore] = useState(100000);
-
-  const checkAnswer = () => {
-    setCountGuess(countGuess + 1);
-    console.log(guess);
-    console.log(answer);
-    if (answer === guess) {
-      setStatus("You are correct!");
-      if (highScore > countGuess) setHighScore(countGuess);
-    } else if (answer > guess) {
-      setStatus("Lower!");
-    } else if (answer < guess) {
-      setStatus("Higher!");
-    }
-  };
-
-  const GameReset = () => {
-    setStatus("Start the game by entering a guess!");
-    setAnswer(0);
-    setGuess(Math.floor(Math.random() * 99));
-    setCountGuess(0);
-  };
-
+  const initialValue = [
+    { text: "23425", image: icon },
+    { text: "3525345", image: icon2 },
+    { text: "dfdfsi", image: icon2 },
+    { text: "dfsijdfl", image: icon },
+    { text: "dfkjlk", image: icon2 },
+    { text: "dfdfs", image: icon },
+    { text: "35dasfd25345", image: icon2 },
+  ];
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
-      <View style={styles.inputContainer}>
-        <Text>Enter your guess between 0 and 99:</Text>
-        <View style={styles.inputCheckContainer}>
-          <TextInput
-            placeholder="Enter your guess ..."
-            style={styles.inputText}
-            value={answer.toString()}
-            onChangeText={(text) => setAnswer(Number(text))}
-            keyboardType="numeric"
-          />
-          <Button title="CHECK" onPress={checkAnswer} />
-        </View>
+      <View>
+        <Text>Scroll View Component</Text>
+        <ScrollView>
+          {initialValue.map((e, index) => (
+            <Item text={e.text} iconSrc={e.image} key={index} />
+          ))}
+        </ScrollView>
       </View>
-      <View style={{ margin: 5 }}>
-        <Text>Your Guesses: {countGuess}</Text>
-        <Text>Your Highscore: {highScore === 100000 ? "" : highScore}</Text>
-      </View>
-      <View style={styles.checkContainer}>
-        <Text style={styles.checkText}>{status}</Text>
-      </View>
-      <View style={{ marginTop: 20 }}>
-        <Button title="RESET" onPress={GameReset} style={styles.resetButton} />
+      <View>
+        <Text>FlatList</Text>
+        <FlatList
+          data={initialValue}
+          renderItem={({ item }) => (
+            <Item text={item.text} iconSrc={item.icon} />
+          )}
+        />
       </View>
     </SafeAreaView>
   );
